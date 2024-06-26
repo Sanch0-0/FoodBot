@@ -23,7 +23,6 @@ Press 'next' button to get one-more recipe...   Good luck))
 @bot.message_handler(func=lambda message: True)
 def look_for_recipe(message):
     product_name = message.text
-
     data = get_recipes_data(product_name=product_name)
     split_messages = parse_recipes_data(data=data)
 
@@ -41,7 +40,7 @@ def look_for_recipe(message):
     markup.add(btn1)
 
     answer = get_next_message(recipe_by_index[message.chat.id])
-    bot.send_message(chat_id=message.chat.id, text=answer, reply_markup=markup, parse_mode='Markdown')
+    bot.send_message(chat_id=message.chat.id, text=answer, reply_markup=markup)
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -55,7 +54,7 @@ def next_recipe(call):
             markup = types.InlineKeyboardMarkup()
             btn1 = types.InlineKeyboardButton("Next", callback_data="btn1")
             markup.add(btn1)
-            bot.send_message(chat_id=call.message.chat.id, text=next_message, reply_markup=markup, parse_mode='Markdown')
+            bot.send_message(chat_id=call.message.chat.id, text=next_message, reply_markup=markup)
 
 
 

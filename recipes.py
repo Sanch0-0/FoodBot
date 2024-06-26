@@ -16,7 +16,6 @@ def get_recipes_data(product_name: str) -> dict:
         "app_key": app_key,
         "q": product_name,
         "type": "public",
-        "imageSize": "LARGE",
         "health": ("vegan","vegetarian"),
         "diet": ("low-sodium","low-fat"),
     }
@@ -44,7 +43,7 @@ def parse_recipes_data(data: dict) -> str:
     for hit in data.get('hits', []):
         recipe = hit.get('recipe', {})
         label = recipe.get("label")
-        image = recipe.get("images", {}).get("LARGE", {}).get("url")
+        image = recipe.get("images", {}).get("REGULAR", {}).get("url")
         ingredient_lines = recipe.get("ingredientLines")
         cuisine_type = recipe.get("cuisineType")
         meal_type = recipe.get("mealType")
@@ -60,7 +59,7 @@ def parse_recipes_data(data: dict) -> str:
         result += f"Meal Type:  {meal_type}\n"
         result += f"Dish Type:  {dish_type}\n"
         result += f"Calories:  {calories: .2f}\n"
-        result += f"[Img]({image})\n\n\n"
+        result += f"Image: {image}\n\n\n"
 
     return result
 
@@ -71,9 +70,10 @@ def get_next_message(recipes_data: dict):
     if index < len(messages):
         message = messages[index]
         recipes_data["index"] += 1
-        return message
+        return message if message else print("Error!")
     else:
         return None
+
 
 
 
